@@ -109,29 +109,30 @@ class Arconix_FAQ_Display {
                     if( !( $exclude == $term->slug ) ) {
                         //Allow to hide Group title of FAQs
                        if ( ! $args['hide_title'] )
-                            $html .= '<h3 id="faq-' . $term->slug . '" class="arconix-faq-term-title arconix-faq-term-' . $term->slug . '">' . $term->name . '</h3>';
+                            $html .= '<h3 id="faq-' . $term->slug . '" class="faq-term-title arconix-faq-term-' . $term->slug . '">' . $term->name . '</h3>';
 
                         // If the term has a description, show it
                         if ( $term->description )
-                            $html .= '<p class="arconix-faq-term-description">' . $term->description . '</p>';
+                            $html .= '<p class="faq-term-description">' . $term->description . '</p>';
 
                         // Output the accordion wrapper if that style has been set
-                        if ( $accordion )
-                            $html .= '<div class="arconix-faq-accordion-wrap">';
+                        /*if ( $accordion )
+                            $html .= '<div class="arconix-faq-accordion-wrap">';*/
 
                         // Loop through the rest of the posts for the term
                         while ( $q->have_posts() ) : $q->the_post();
 
-                            if ( $accordion )
-                                $html .= $this->accordion_output();
-                            else
-                                $html .= $this->toggle_output();
+                            // if ( $accordion )
+                                // $html .= $this->accordion_output();
+                            // else
+                                // $html .= $this->toggle_output();
+                                $html .= $this->custom_output();
 
                         endwhile;
 
                         // Close the accordion wrapper if necessary
-                        if ( $accordion )
-                            $html .= '</div>';
+                        /*if ( $accordion )
+                            $html .= '</div>';*/
                     }
                 } // end have_posts()
 
@@ -227,14 +228,14 @@ class Arconix_FAQ_Display {
 
         // Set up our anchor link
         $link = 'faq-' . sanitize_html_class( get_the_title() );
-
-        $html .= '<div id="faq-' . get_the_id() . '" class="arconix-faq-wrap">';
-        $html .= '<div id="' . $link . '" class="arconix-faq-title' . $lo . '">' . get_the_title() . '</div>';
-        $html .= '<div class="arconix-faq-content' . $lo . '">' . apply_filters( 'the_content', get_the_content() );
+        $html .= '<br>';
+        $html .= '<div id="faq-' . get_the_id() . '" class="faq-wrap">';
+        $html .= '<h3 id="' . $link . '" class="faq-title' . $lo . '">' . get_the_title() . '</h3>';
+        $html .= '<p class="faq-content' . $lo . '">' . apply_filters( 'the_content', get_the_content() );
 
         $html .= $this->return_to_top( $link );
 
-        $html .= '</div>'; // faq-content
+        $html .= '</p>'; // faq-content
         $html .= '</div>'; // faq-wrap
 
         // Allows a user to completely overwrite the output
