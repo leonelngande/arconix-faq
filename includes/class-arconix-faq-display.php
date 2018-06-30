@@ -217,7 +217,29 @@ class Arconix_FAQ_Display {
      * @param   bool    $echo       echo or return the results
      * @return  string  $html     FAQs in a toggle configuration
      */
-    private function toggle_output( $echo = false ) {
+        private function toggle_output( $echo = false ) {
+        $html = '';
+        // Grab our metadata
+        $lo = get_post_meta( get_the_id(), '_acf_open', true );
+        // If Open on Load checkbox is true
+        $lo == true ? $lo = ' faq-open' : $lo = ' faq-closed';
+        // Set up our anchor link
+        $link = 'faq-' . sanitize_html_class( get_the_title() );
+        $html .= '<div id="faq-' . get_the_id() . '" class="arconix-faq-wrap">';
+        $html .= '<div id="' . $link . '" class="arconix-faq-title' . $lo . '">' . get_the_title() . '</div>';
+        $html .= '<div class="arconix-faq-content' . $lo . '">' . apply_filters( 'the_content', get_the_content() );
+        $html .= $this->return_to_top( $link );
+        $html .= '</div>'; // faq-content
+        $html .= '</div>'; // faq-wrap
+        // Allows a user to completely overwrite the output
+        $html = apply_filters( 'arconix_faq_toggle_output', $html );
+        if ( $echo === true )
+            echo $html;
+        else
+            return $html;
+    }
+    
+    private function custom_output( $echo = false ) {
         $html = '';
 
         // Grab our metadata
